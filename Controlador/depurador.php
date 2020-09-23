@@ -46,7 +46,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		=            MOVEMOS EL ARCHIVO A LA CARPETA DEL PROYECTO            =
 		====================================================================*/
 	
-		move_uploaded_file($tmp_archivoEstacion, "../cargados/$nombre_archivoEstacion");
+		move_uploaded_file($tmp_archivoEstacion, "../cargados/$nombre_archivoEstacion"); 
 
 		
 		/*=============================================================================================
