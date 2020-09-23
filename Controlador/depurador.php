@@ -66,7 +66,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		$letraMayor_columnas = $hojaActual_documentoEstacion -> getHighestColumn();
 
 		//obtenemos el numero de la mayor letra de las columnas
-		$numeroMayor_columnas = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($letraMayor_columnas);
+		$numeroMayor_columnas = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($letraMayor_columnas); 
 
 
 		/*========================================================================================
