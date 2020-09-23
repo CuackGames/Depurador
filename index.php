@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
  
-	<meta charset="UTF-8">
+	<meta charset="UTF-8"> 
 
 	<!-- Bootstrap 4 is mobile-first -->	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- -->
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Document</title>   
 
 	<!--=====================================
 	=            Bootstrap 4 CDN            =
