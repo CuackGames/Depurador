@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 //llama a la clase writer/xlsx para crear el archivo xlsx
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+set_time_limit(500);
 
 /* ============================================================================================================ */
 
@@ -20,8 +21,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 	$contador_horas = 0;					//variable para contar las horas de cada dia, y comparar con los datos medidos. Asi se comprobara si se salto alguna hora
 	$contador_tmp = 0;						//variable para almacenar temporalmente el dato consultado en ela rchivo original
 	$error_en_fila = false;					//booleano para activar en caso de descubrir que faltan los datos de una fila
-	$fila_nuevoExcel = 1;					//variable para llevar el orden de las filas del nuevo excel, en elq eu se estan copiando los datos
-	$columna_nuevoExcel = 1;				//variable para llevar el orden de las columnas del nuevo excel, en el que se estan copiando los datos
+	$fila_excelDepurado = 1;					//variable para llevar el orden de las filas del nuevo excel, en elq eu se estan copiando los datos
+	$columna_excelDepurado = 1;				//variable para llevar el orden de las columnas del nuevo excel, en el que se estan copiando los datos
 
 /* ============================================================================================================ */
 
@@ -77,18 +78,18 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		========================================================================================*/
 		
 		//crear un nuevo objeto de la clase spreadsheet. para el nuevo doc. excel
-		$nuevoExcel = new Spreadsheet();		
+		$excelDepurado = new Spreadsheet();		
 
 		//obtiene la hoja activa actual(primera hoja). para el nuevo doc excel.
-		$hojaActual_nuevoExcel = $nuevoExcel -> getActiveSheet();
+		$hojaActual_excelDepurado = $excelDepurado -> getActiveSheet();
 
 		//titulo de la hoja
-		$hojaActual_nuevoExcel ->setTitle("Datos metereologicos depurados");
-		$hojaActual_nuevoExcel->setCellValueByColumnAndRow(11, 1, "fila-insertada");
-		$hojaActual_nuevoExcel->setCellValueByColumnAndRow(12, 1, "contador-horas");
-		$hojaActual_nuevoExcel->setCellValueByColumnAndRow(13, 1, "RAIN depurada");
-		$hojaActual_nuevoExcel->setCellValueByColumnAndRow(14, 1, "RAIN RATE x0.1");	//dividido entre 10
-		$hojaActual_nuevoExcel->setCellValueByColumnAndRow(15, 1, "RAD.SOLAR x10");				
+		$hojaActual_excelDepurado ->setTitle("Datos metereologicos depurados");
+		$hojaActual_excelDepurado->setCellValueByColumnAndRow(11, 1, "fila-insertada");
+		$hojaActual_excelDepurado->setCellValueByColumnAndRow(12, 1, "contador-horas");
+		$hojaActual_excelDepurado->setCellValueByColumnAndRow(13, 1, "RAIN depurada");
+		$hojaActual_excelDepurado->setCellValueByColumnAndRow(14, 1, "RAIN RATE x0.1");	//dividido entre 10
+		$hojaActual_excelDepurado->setCellValueByColumnAndRow(15, 1, "RAD.SOLAR x10");				
 
 
 		/*==============================================================================================================================================================================
@@ -99,7 +100,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		for($fila = 2; $fila <= $maxFilas_documentoEstacion; $fila++)		
 		{			
 			//contamos las filas para luego comparar la cantidad de datos por dia con el numero de filas. Deben ser la misma cantidad. Es decir 24, de 0 a 23
-			if($fila_nuevoExcel >= 3)
+			if($fila_excelDepurado >= 3)
 			{
 				$contador_horas++;
 			}			
@@ -142,11 +143,11 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 					if($columna == 2)
 					{
 						//En la celda que estamos creando, de la hora faltante, copiamos el dato de la celda de arriba
-						$hojaActual_nuevoExcel->setCellValueByColumnAndRow(11, $fila_nuevoExcel, "X");
+						$hojaActual_excelDepurado->setCellValueByColumnAndRow(11, $fila_excelDepurado, "X");
 
 						//guardamos en la celda correspondiente el dato correcto guardado en contador_horas
-						$hojaActual_nuevoExcel->setCellValueByColumnAndRow($columna_nuevoExcel, $fila_nuevoExcel, $contador_horas);						
-						$columna_nuevoExcel++;
+						$hojaActual_excelDepurado->setCellValueByColumnAndRow($columna_excelDepurado, $fila_excelDepurado, $contador_horas);						
+						$columna_excelDepurado++;
 					}
 					else
 					{
@@ -162,8 +163,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 						}
 
 						//En la celda que estamos creando, de la hora faltante, copiamos el dato de la celda de arriba
-						$hojaActual_nuevoExcel->setCellValueByColumnAndRow($columna_nuevoExcel, $fila_nuevoExcel, $valorAnterior);							
-						$columna_nuevoExcel++;					
+						$hojaActual_excelDepurado->setCellValueByColumnAndRow($columna_excelDepurado, $fila_excelDepurado, $valorAnterior);							
+						$columna_excelDepurado++;					
 					
 					}			
 									
@@ -172,23 +173,23 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 				{		
 
 					//si el booleano no esta activo. Queire decir que los datos van bien , asi que los copiamos normalmente
-					$hojaActual_nuevoExcel->setCellValueByColumnAndRow($columna_nuevoExcel, $fila_nuevoExcel, $valorFormateado);		
+					$hojaActual_excelDepurado->setCellValueByColumnAndRow($columna_excelDepurado, $fila_excelDepurado, $valorFormateado);		
 						
-					$columna_nuevoExcel++;
+					$columna_excelDepurado++;
 					
 					//esto apra que no me cambie el titulo de la columna en la fila 1, y solo guarde el contador un vez por fila
 					if($fila >= 3 && $columna == 1)
 					{
 						//guardamos en una columna extra, los conteos de las horas hechos por contador_horas
-						$hojaActual_nuevoExcel->setCellValueByColumnAndRow(12, $fila_nuevoExcel, $contador_horas);	
+						$hojaActual_excelDepurado->setCellValueByColumnAndRow(12, $fila_excelDepurado, $contador_horas);	
 					}								
 
 				}
 			}
 
-			//reiniciamos la variable columna_nuevoExcel, que lleva el conteo de las columnas del nuevo excel generado
-			$columna_nuevoExcel = 1;
-			$fila_nuevoExcel++;
+			//reiniciamos la variable columna_excelDepurado, que lleva el conteo de las columnas del nuevo excel generado
+			$columna_excelDepurado = 1;
+			$fila_excelDepurado++;
 			
 			//si el booleano esta en true
 			if($error_en_fila == true)
@@ -208,10 +209,10 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		=================================================================================================*/		
 
 		//obtenemos el mayor numero de filas
-		$maxfilas_nuevoExcel = $hojaActual_nuevoExcel -> getHighestRow();
+		$maxFilas_excelDepurado = $hojaActual_excelDepurado -> getHighestRow();
 
 		//iteramos en las filas del nuevo excel. Las columnas no por que son fijas
-		for($fila = 2; $fila <= $maxfilas_nuevoExcel; $fila++)
+		for($fila = 2; $fila <= $maxFilas_excelDepurado; $fila++)
 		{
 			//9=H, 10=I, 11=J, 12=k, 13=L, 14=M, 15=N
 			//H se copia en M
@@ -219,39 +220,39 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 			//J se copia en O		
 
 			//obtenemos el valor indicada
-			$valor_nuevoExcel = $hojaActual_nuevoExcel -> getCellByColumnAndRow(8, $fila) -> getFormattedValue();
+			$valor_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(8, $fila) -> getFormattedValue();
 		
 			//si el valor es cero
-			if($valor_nuevoExcel == 0)
+			if($valor_excelDepurado == 0)
 			{
 				//se copia cero
-				$hojaActual_nuevoExcel ->setCellValueByColumnAndRow(13, $fila, '0');
+				$hojaActual_excelDepurado ->setCellValueByColumnAndRow(13, $fila, '0');
 			}
-			elseif ($valor_nuevoExcel > 0) 
+			elseif ($valor_excelDepurado > 0) 
 			{
 				//si es mayor a cero
 				//buscamos el valor de la fila anterior
 				$fila_previa = $fila -1;
 
 				//consultamos la celda de arriba
-				$valorPrevio_nuevoExcel = $hojaActual_nuevoExcel -> getCellByColumnAndRow(8, $fila_previa)-> getFormattedValue();				
+				$valorPrevio_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(8, $fila_previa)-> getFormattedValue();				
 
 				//si el valor de la celda de arriba es mayor a cero
-				if($valorPrevio_nuevoExcel > 0)
+				if($valorPrevio_excelDepurado > 0)
 				{
 					//en la celda actual, se copia cero
-					$hojaActual_nuevoExcel ->setCellValueByColumnAndRow(13, $fila, '0');
+					$hojaActual_excelDepurado ->setCellValueByColumnAndRow(13, $fila, '0');
 				}
 				else
 				{
 					//se copia el valor tal cual venga
-					$hojaActual_nuevoExcel ->setCellValueByColumnAndRow(13, $fila, $valor_nuevoExcel);
+					$hojaActual_excelDepurado ->setCellValueByColumnAndRow(13, $fila, $valor_excelDepurado);
 				}								
 			}	
  			
  			//copiamos en las celdas 14 y 15, los datos de las celdas 9 y 10, con sus respectivas operaciones
-			$hojaActual_nuevoExcel ->setCellValueByColumnAndRow(14, $fila, '=I'.$fila.'/10'); 
-			$hojaActual_nuevoExcel ->setCellValueByColumnAndRow(15, $fila, '=J'.$fila.'*10'); 		
+			$hojaActual_excelDepurado ->setCellValueByColumnAndRow(14, $fila, '=I'.$fila.'/10'); 
+			$hojaActual_excelDepurado ->setCellValueByColumnAndRow(15, $fila, '=J'.$fila.'*10'); 		
 
 		}			
 
@@ -260,14 +261,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		=            CENTRAMOS Y AJUSTAMOS LOS ESPACIOS            =
 		==========================================================*/			
 
-		$alineacion_nuevoExcel = $hojaActual_nuevoExcel -> getStyle('A1:Z1000') -> getAlignment();		
-		$alineacion_nuevoExcel->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+		$alineacion_excelDepurado = $hojaActual_excelDepurado -> getStyle('A1:Z1000') -> getAlignment();		
+		$alineacion_excelDepurado->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
 		$letras = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",);
 
 		foreach ($letras as $value) 
 		{
-			$dimensionColumnas_nuevoExcel = $hojaActual_nuevoExcel -> getColumnDimension($value) ->setAutoSize(true);				
+			$dimensionColumnas_excelDepurado = $hojaActual_excelDepurado -> getColumnDimension($value) ->setAutoSize(true);				
 		}
 
 
@@ -276,29 +277,68 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		=====================================================================*/
 
 		$maxFilas_documentoBackup = $hojaActual_documentoBackup -> getHighestRow();
-		$primerDato_nuevoExcel = $hojaActual_nuevoExcel -> getCellByColumnAndRow(1, 2) -> getFormattedValue(); 
+		$filaObjetivo_documentoBackup = 0;		
 		
 		for($fila = 1; $fila <= $maxFilas_documentoBackup; $fila++)
-		{		
-			$datoFecha_docuemntoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();
+		{					
+			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();
+			$primerDato_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(1, 2) -> getFormattedValue(); 
 
-			if($datoFecha_docuemntoBackup == $primerDato_nuevoExcel)
+			if($datoFecha_documentoBackup == $primerDato_excelDepurado)
 			{
-				echo "dato encontrado en la fila ".$fila;
+				$filaObjetivo_documentoBackup = $fila;				
 				break;
 			}
 		}
 
+		$filas_excelDepurado = 1;
+		$total_filas_a_copiar = $filaObjetivo_documentoBackup + $maxFilas_excelDepurado;
+		
+		for($fila = $filaObjetivo_documentoBackup; $fila <= $total_filas_a_copiar; $fila++)
+		{
+			$filas_excelDepurado++;
 
-		
-		
+			///excelDepurado-columna3-temp, se copia en, excelBackup-columna8-tempOut
+			$datoTemp_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(3, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(8, $fila, $datoTemp_excelDepurado);			
+			
+			//en excelBackup-columna9-hiTemp y en excelBackup-columna10-lowTemp, se copia -999
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(9, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(10, $fila, '-999');
+
+			//excelDepurado-columna4-humedad, se copia en excelBackup-columna11-outHum
+			$datoHumedad_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(4, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(11, $fila, $datoHumedad_excelDepurado);
+
+			//en excelBackup-columna12-dewPt, se copia -999
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(12, $fila, '-999');
+
+			//excelDepurado-columna5-v:v, se copia en excelBackup-columna13-windSpeed
+			$datoVV_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(5, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(13, $fila, $datoVV_excelDepurado);
+
+			//excelDepurado-columna6-D:V, se copia en excelBackup-columna14-windDir
+			$datoDV_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(6, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(14, $fila, $datoDV_excelDepurado);
+
+			//excelBackup-columnas-13(WindRun)-14(HiSpeed)-15(HiDir)-16(WindChill)
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(13, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(14, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(15, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(16, $fila, '-999');
+
+		}
+
 
 		/*==================================================================================
 		=            GUARDAMOS EL NUEVO ARCHIVO LUEGO DEL PROCESO DE DEPURACION            =
 		==================================================================================*/
 
-		$writer = new Xls($nuevoExcel);
-		$writer->save('../creados/Datos metereologicos depurados.xls');
+		$writer_excelDepurado = new Xls($excelDepurado);
+		$writer_excelDepurado->save('../creados/Datos metereologicos depurados.xls');
+
+		$writer_excelBackup = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($documentoBackup, 'Xls');
+		$writer_excelBackup->save('../creados/Lago Alto 2019.xls');
 				
 
 		$bandera_de_informacion = 101;			
