@@ -32,41 +32,44 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		=            TOMAMOS LOS ARCHIVOS ENVIADOS POR VARIABLES POST            =
 		========================================================================*/
 
-		//obtenemos el nombre del archivo
+		//obtenemos el nombre de los archivos cargados
 		$nombre_archivoEstacion = $_FILES['excel-estacion']['name'];
+		$nombre_archivoBackup = $_FILES['excel-backup']['name'];
 
 		//mostramos en pantalla el nombre del archivo analizado
 		$variable_en_pantalla = $_FILES['excel-estacion']['name'];
 
-		//El nombre temporal del fichero en el cual se almacena el fichero subido en el servidor.
+		//El nombre temporal del fichero en el cual se almacenan los ficheros subidos en el servidor.
 		$tmp_archivoEstacion = $_FILES['excel-estacion']["tmp_name"];
-
+		$tmp_archivoBackup = $_FILES['excel-backup']['tmp_name'];
 
 		/*====================================================================
 		=            MOVEMOS EL ARCHIVO A LA CARPETA DEL PROYECTO            =
 		====================================================================*/ 
 	
 		move_uploaded_file($tmp_archivoEstacion, "../cargados/$nombre_archivoEstacion"); 
-
+		move_uploaded_file($tmp_archivoBackup, "../cargados/$nombre_archivoBackup" );
 		
 		/*=============================================================================================
 		=            CARGAMOS EL ARCHIVO ESTACION, OBTENEMOS EL NUMERO DE FILAS Y COLUMNAS            =
 		=============================================================================================*/
 
-		//cargamos el documento
+		//cargamos los documentos cargados
 		$documentoEstacion = IOFactory::load("../cargados/$nombre_archivoEstacion");
+		$documentoBackup = IOFactory::load("../cargados/$nombre_archivoBackup");
 
-		//obtenemos la primera hoja del documento
+		//obtenemos la primera hoja de cada documento
 		$hojaActual_documentoEstacion = $documentoEstacion -> getSheet(0);
+		$hojaActual_documentoBackup = $documentoBackup -> getSheetByName("ORIGINAL");
 
-		//obtenemos el mayor numero de filas
-		$numeroMayor_filas = $hojaActual_documentoEstacion -> getHighestRow();
+		//obtenemos el mayor numero de filas del archivo estacion
+		$maxFilas_documentoEstacion = $hojaActual_documentoEstacion -> getHighestRow();
 
-		//obtenemos la mayor letra de las columnas
+		//obtenemos la mayor letra de las columnas del archivo estacion
 		$letraMayor_columnas = $hojaActual_documentoEstacion -> getHighestColumn();
 
-		//obtenemos el numero de la mayor letra de las columnas
-		$numeroMayor_columnas = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($letraMayor_columnas); 
+		//obtenemos el numero de la mayor letra de las columnas del archivo estacion
+		$maxColumnas_documentoEstacion = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($letraMayor_columnas); 
 
 
 		/*========================================================================================
@@ -88,12 +91,12 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		$hojaActual_nuevoExcel->setCellValueByColumnAndRow(15, 1, "RAD.SOLAR x10");				
 
 
-		/*===================================================================================================================================================================
-		=            RECORREMOS LAS CELDAS DEL ARCHIVO ESTACION HORIZONTALMENTE DE IZQUEIRDA A DERECHA, INICIANDO EN LA CELDA A2 Y AGREGAMOS LAS FILAS FALTANTES            =
-		===================================================================================================================================================================*/
+		/*==============================================================================================================================================================================
+		=            RECORREMOS LAS CELDAS DEL ARCHIVO ESTACION HORIZONTALMENTE DE IZQUEIRDA A DERECHA, INICIANDO EN LA CELDA A2 Y AGREGAMOS LAS FILAS FALTANTES  EN EL NUEVO          =
+		==============================================================================================================================================================================*/
 				
 		//iteramos en las celdas del documento cargado, atraves de sus filas y columnas
-		for($fila = 2; $fila <= $numeroMayor_filas; $fila++)		
+		for($fila = 2; $fila <= $maxFilas_documentoEstacion; $fila++)		
 		{			
 			//contamos las filas para luego comparar la cantidad de datos por dia con el numero de filas. Deben ser la misma cantidad. Es decir 24, de 0 a 23
 			if($fila_nuevoExcel >= 3)
@@ -108,7 +111,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 			}		
 
 			//Iniciamos el proceso en la primera columna. Con este for recorreremos todas las columnas de la fila correspondiente
-			for($columna = 1; $columna <= $numeroMayor_columnas; $columna++)
+			for($columna = 1; $columna <= $maxColumnas_documentoEstacion; $columna++)
 			{		
 				//obtenemos la celda indicada
 				$valorFormateado = $hojaActual_documentoEstacion -> getCellByColumnAndRow($columna, $fila)-> getFormattedValue();			
@@ -201,7 +204,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 
 		/*=================================================================================================
-		=            CREAMOS COLUMNAS 13, 14 Y 15, APARTIR DE LA CORRECCION DE LAS COLUMNAS 8, 9 Y 10            =		=================================================================================================*/		
+		=            CREAMOS COLUMNAS 13, 14 Y 15, APARTIR DE LA CORRECCION DE LAS COLUMNAS 8, 9 Y 10     =		
+		=================================================================================================*/		
 
 		//obtenemos el mayor numero de filas
 		$maxfilas_nuevoExcel = $hojaActual_nuevoExcel -> getHighestRow();
@@ -265,6 +269,28 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 		{
 			$dimensionColumnas_nuevoExcel = $hojaActual_nuevoExcel -> getColumnDimension($value) ->setAutoSize(true);				
 		}
+
+
+		/*=====================================================================
+		=            INSERTANDO INFORMACION EN EL DOCUMENTO BACKUP            =
+		=====================================================================*/
+
+		$maxFilas_documentoBackup = $hojaActual_documentoBackup -> getHighestRow();
+		$primerDato_nuevoExcel = $hojaActual_nuevoExcel -> getCellByColumnAndRow(1, 2) -> getFormattedValue(); 
+		
+		for($fila = 1; $fila <= $maxFilas_documentoBackup; $fila++)
+		{		
+			$datoFecha_docuemntoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();
+
+			if($datoFecha_docuemntoBackup == $primerDato_nuevoExcel)
+			{
+				echo "dato encontrado en la fila ".$fila;
+				break;
+			}
+		}
+
+
+		
 		
 
 		/*==================================================================================
