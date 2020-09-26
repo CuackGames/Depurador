@@ -1,5 +1,6 @@
 options ALL -Indexes
 php_value max_execution_time 500
+php_value memory_limit 2048M
 
 # php -- BEGIN cPanel-generated handler, do not edit
 # Set the “ea-php56” package as the default “PHP” programming language.

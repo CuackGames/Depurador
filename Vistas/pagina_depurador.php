@@ -73,7 +73,7 @@
 					</div>
                     
                     <div>                        
-                        - <label><a href="" >Descargar archivo excel depurado aqui</a></label>
+                        - <label><a href="../creados/Datos metereologicos depurados.xls" >Descargar archivo excel depurado aqui</a></label>
                     </div>
 
 					<div>
@@ -126,7 +126,7 @@
 
                     <li class="list-group-item">
                         <div>
-                            <label><strong>Adjunte el excel backup de la estacion:</strong></label>
+                            <label><strong>Adjunte el excel backup de la estacion, para la inserción de los datos</strong></label>
                         </div>
                         <div>
                             <input type="file" name="excel-backup" id="excel-backup" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" >

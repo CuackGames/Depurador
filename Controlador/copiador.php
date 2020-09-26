@@ -60,6 +60,9 @@ set_time_limit(500);
 		$hojaActual_documentoBackup = $documentoBackup -> getSheetByName("ORIGINAL");			
         $hojaActual_excelDepurado = $documentoDepurado -> getSheet(0);
 
+        //maximo filas excel depurado
+        $maxFilas_excelDepurado = $hojaActual_excelDepurado -> getHighestRow();;
+
 		/*=====================================================================
 		=            INSERTANDO INFORMACION EN EL DOCUMENTO BACKUP            =
 		=====================================================================*/
@@ -121,8 +124,8 @@ set_time_limit(500);
 		=            GUARDAMOS EL NUEVO ARCHIVO LUEGO DEL PROCESO DE DEPURACION            =
 		==================================================================================*/
 		
-		//$writer_excelBackup = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($documentoBackup, 'Xls');
-		//$writer_excelBackup->save('../creados/Lago Alto 2019.xls');
+		$writer_excelBackup = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($documentoBackup, 'Xls');
+		$writer_excelBackup->save('../creados/Lago Alto 2019.xls');
 				
 
 		$bandera_de_informacion = 100;			
