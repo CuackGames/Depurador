@@ -17,7 +17,9 @@ set_time_limit(500);
 /* ============================================================================================================ */
 
 	$bandera_de_informacion = 0;			//variable para mostrar mensaje en la pantalla
-	$variable_en_pantalla = 0;				//variable para mostrar el nombre del archivo en la pantalla
+	$contador_datos_agregados = 0;
+	$fechaAgregada_excelDepurado = 0;
+	$datosAgregados_excelDepurado[] = 0;
 	$contador_horas = 0;					//variable para contar las horas de cada dia, y comparar con los datos medidos. Asi se comprobara si se salto alguna hora
 	$contador_tmp = 0;						//variable para almacenar temporalmente el dato consultado en ela rchivo original
 	$error_en_fila = false;					//booleano para activar en caso de descubrir que faltan los datos de una fila
@@ -35,21 +37,18 @@ set_time_limit(500);
 
 		//obtenemos el nombre de los archivos cargados
 		$nombre_archivoEstacion = $_FILES['excel-estacion']['name'];
-		$nombre_archivoBackup = $_FILES['excel-backup']['name'];
-
-		//mostramos en pantalla el nombre del archivo analizado
-		$variable_en_pantalla = $_FILES['excel-estacion']['name'];
+		//$nombre_archivoBackup = $_FILES['excel-backup']['name'];	
 
 		//El nombre temporal del fichero en el cual se almacenan los ficheros subidos en el servidor.
 		$tmp_archivoEstacion = $_FILES['excel-estacion']["tmp_name"];
-		$tmp_archivoBackup = $_FILES['excel-backup']['tmp_name'];
+		//$tmp_archivoBackup = $_FILES['excel-backup']['tmp_name'];
 
 		/*====================================================================
 		=            MOVEMOS EL ARCHIVO A LA CARPETA DEL PROYECTO            =
 		====================================================================*/ 
 	
 		move_uploaded_file($tmp_archivoEstacion, "../cargados/$nombre_archivoEstacion"); 
-		move_uploaded_file($tmp_archivoBackup, "../cargados/$nombre_archivoBackup" );
+		//move_uploaded_file($tmp_archivoBackup, "../cargados/$nombre_archivoBackup" );
 		
 		/*=============================================================================================
 		=            CARGAMOS EL ARCHIVO ESTACION, OBTENEMOS EL NUMERO DE FILAS Y COLUMNAS            =
@@ -57,11 +56,11 @@ set_time_limit(500);
 
 		//cargamos los documentos cargados
 		$documentoEstacion = IOFactory::load("../cargados/$nombre_archivoEstacion");
-		$documentoBackup = IOFactory::load("../cargados/$nombre_archivoBackup");
+		//$documentoBackup = IOFactory::load("../cargados/$nombre_archivoBackup");
 
 		//obtenemos la primera hoja de cada documento
 		$hojaActual_documentoEstacion = $documentoEstacion -> getSheet(0);
-		$hojaActual_documentoBackup = $documentoBackup -> getSheetByName("ORIGINAL");
+		//$hojaActual_documentoBackup = $documentoBackup -> getSheetByName("ORIGINAL");
 
 		//obtenemos el mayor numero de filas del archivo estacion
 		$maxFilas_documentoEstacion = $hojaActual_documentoEstacion -> getHighestRow();
@@ -142,6 +141,14 @@ set_time_limit(500);
 					//si estamos en la columna 2
 					if($columna == 2)
 					{
+						//aumentamos el valor de la variable, apra contar las filas insertadas.
+						$contador_datos_agregados++;
+
+						//obtengo la fecha del dato faltante
+						$fechaAgregada_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(1, $fila_excelDepurado)-> getFormattedValue();											
+						$datosAgregados_excelDepurado[$fila_excelDepurado] = $fechaAgregada_excelDepurado;	
+										
+
 						//En la celda que estamos creando, de la hora faltante, copiamos el dato de la celda de arriba
 						$hojaActual_excelDepurado->setCellValueByColumnAndRow(11, $fila_excelDepurado, "X");
 
@@ -272,76 +279,14 @@ set_time_limit(500);
 		}
 
 
-		/*=====================================================================
-		=            INSERTANDO INFORMACION EN EL DOCUMENTO BACKUP            =
-		=====================================================================*/
-
-		$maxFilas_documentoBackup = $hojaActual_documentoBackup -> getHighestRow();
-		$filaObjetivo_documentoBackup = 0;		
-		
-		for($fila = 1; $fila <= $maxFilas_documentoBackup; $fila++)
-		{					
-			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();
-			$primerDato_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(1, 2) -> getFormattedValue(); 
-
-			if($datoFecha_documentoBackup == $primerDato_excelDepurado)
-			{
-				$filaObjetivo_documentoBackup = $fila;				
-				break;
-			}
-		}
-
-		$filas_excelDepurado = 1;
-		$total_filas_a_copiar = $filaObjetivo_documentoBackup + $maxFilas_excelDepurado;
-		
-		for($fila = $filaObjetivo_documentoBackup; $fila <= $total_filas_a_copiar; $fila++)
-		{
-			$filas_excelDepurado++;
-
-			///excelDepurado-columna3-temp, se copia en, excelBackup-columna8-tempOut
-			$datoTemp_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(3, $filas_excelDepurado) -> getFormattedValue();
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(8, $fila, $datoTemp_excelDepurado);			
-			
-			//en excelBackup-columna9-hiTemp y en excelBackup-columna10-lowTemp, se copia -999
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(9, $fila, '-999');
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(10, $fila, '-999');
-
-			//excelDepurado-columna4-humedad, se copia en excelBackup-columna11-outHum
-			$datoHumedad_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(4, $filas_excelDepurado) -> getFormattedValue();
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(11, $fila, $datoHumedad_excelDepurado);
-
-			//en excelBackup-columna12-dewPt, se copia -999
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(12, $fila, '-999');
-
-			//excelDepurado-columna5-v:v, se copia en excelBackup-columna13-windSpeed
-			$datoVV_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(5, $filas_excelDepurado) -> getFormattedValue();
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(13, $fila, $datoVV_excelDepurado);
-
-			//excelDepurado-columna6-D:V, se copia en excelBackup-columna14-windDir
-			$datoDV_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(6, $filas_excelDepurado) -> getFormattedValue();
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(14, $fila, $datoDV_excelDepurado);
-
-			//excelBackup-columnas-13(WindRun)-14(HiSpeed)-15(HiDir)-16(WindChill)
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(13, $fila, '-999');
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(14, $fila, '-999');
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(15, $fila, '-999');
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(16, $fila, '-999');
-
-		}
-
-
 		/*==================================================================================
 		=            GUARDAMOS EL NUEVO ARCHIVO LUEGO DEL PROCESO DE DEPURACION            =
 		==================================================================================*/
 
 		$writer_excelDepurado = new Xls($excelDepurado);
-		$writer_excelDepurado->save('../creados/Datos metereologicos depurados.xls');
+		$writer_excelDepurado->save('../creados/Datos metereologicos depurados.xls');				
 
-		$writer_excelBackup = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($documentoBackup, 'Xls');
-		$writer_excelBackup->save('../creados/Lago Alto 2019.xls');
-				
-
-		$bandera_de_informacion = 101;			
+		$bandera_de_informacion = 100;			
 
 	}
 	else
@@ -361,11 +306,7 @@ set_time_limit(500);
 
 			case 100: 
 				$mensaje = "Depuracion completa";
-				break;
-
-			case 101:
-				$mensaje = "Vamos bien!";
-				break;
+				break;			
 
 			case 102:
 				$mensaje = "Falto adjuntar uno de los elementos necesarios";
@@ -381,119 +322,8 @@ set_time_limit(500);
 
 /* ============================================================================================================ */
 
-
-
 ?>
 
 <!-- ========================================================================================================= -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-	<meta charset="UTF-8">
-
-
-	<!-- Bootstrap 4 is mobile-first -->	
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- -->
-
-
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-
-
-	<!--=====================================
-	=            Bootstrap 4 CDN            =
-	======================================-->
-
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-	<!--====  End of Section comment  ====-->
-
-
-	<!--=====================================
-	=            Font Awesome           	=
-	======================================-->
-
-	<script src="https://kit.fontawesome.com/ae92afae65.js" crossorigin="anonymous"></script>
-
-	<!--====  End of Section comment  ====-->
-
-</head>
-<body class="bg-dark">
-
-	<!--=====================================
-	=           	 TITULO           	    =
-	======================================-->
-	
-	<div class="container-fluid">
-		<p class="text-center text-white h2 py-3">DEPURADOR</p>
-	</div>
-
-	<!--=====================================
-	=                 CUERPO           	    =
-	======================================-->
-
-	<div class="container">
-
-		<span>
-			<p class="text-white h4 py-2">Resultados del análisis</p>		
-		</span>
-
-		<div >	
-
-			<ul class="list-group pl-3 pr-3">
-
-				<!-- Link de descarga de documento -->				
-
-				<li class="list-group-item">
-
-					<a href="" >Descargar archivo excel</a>
-					
-				</li>
-
-				<!-- Nombre de documento analizado -->
-
-				<li class="list-group-item">
-					<div>
-						<label><strong>Documento analizado</strong></label>
-					</div>
-					<div>
-						<?php echo $variable_en_pantalla; ?>
-					</div>
-				</li>
-
-				<!-- Estado del proceso -->
-
-				<li class="list-group-item">
-
-					<?php echo Mensaje($bandera_de_informacion); ?>
-
-				</li>
-
-			</ul>
-
-		</div>	
-
-		<div class="container pt-3">
-
-			<button type="button" class="btn btn-default btn-light float-right " onclick="history.back()">Regresar</button>
-
-		</div>
-
-	</div>	
-
-	
-</body>
-</html>
+<?php include "../Vistas/pagina_depurador.php";  ?>
