@@ -37,8 +37,8 @@ set_time_limit(500);
 		========================================================================*/
 
 		//obtenemos el nombre de los archivos cargados		
-		$nombre_archivoBackup = $_FILES['excel-backup']['name'];	
-
+		$nombre_archivoBackup = $_FILES['excel-backup']['name'];
+	
 		//El nombre temporal del fichero en el cual se almacenan los ficheros subidos en el servidor.		
 		$tmp_archivoBackup = $_FILES['excel-backup']['tmp_name'];
 
@@ -61,29 +61,29 @@ set_time_limit(500);
         $hojaActual_excelDepurado = $documentoDepurado -> getSheet(0);
 
         //maximo filas excel depurado
-        $maxFilas_excelDepurado = $hojaActual_excelDepurado -> getHighestRow();;
+        $maxFilas_excelDepurado = $hojaActual_excelDepurado -> getHighestRow();
 
 		/*=====================================================================
 		=            INSERTANDO INFORMACION EN EL DOCUMENTO BACKUP            =
 		=====================================================================*/
 
 		$maxFilas_documentoBackup = $hojaActual_documentoBackup -> getHighestRow();
+		$primerDato_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(1, 2) -> getFormattedValue(); 
 		$filaObjetivo_documentoBackup = 0;		
 		
 		for($fila = 1; $fila <= $maxFilas_documentoBackup; $fila++)
 		{					
-			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();
-			$primerDato_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(1, 2) -> getFormattedValue(); 
+			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();			
 
 			if($datoFecha_documentoBackup == $primerDato_excelDepurado)
 			{
-				$filaObjetivo_documentoBackup = $fila;				
+				$filaObjetivo_documentoBackup = $fila;		
 				break;
 			}
 		}
 
 		$filas_excelDepurado = 1;
-		$total_filas_a_copiar = $filaObjetivo_documentoBackup + $maxFilas_excelDepurado;
+		$total_filas_a_copiar = $filaObjetivo_documentoBackup + $maxFilas_excelDepurado;		
 		
 		for($fila = $filaObjetivo_documentoBackup; $fila <= $total_filas_a_copiar; $fila++)
 		{
@@ -112,11 +112,31 @@ set_time_limit(500);
 			$datoDV_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(6, $filas_excelDepurado) -> getFormattedValue();
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(14, $fila, $datoDV_excelDepurado);
 
-			//excelBackup-columnas-13(WindRun)-14(HiSpeed)-15(HiDir)-16(WindChill)
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(13, $fila, '-999');
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(14, $fila, '-999');
+			//excelBackup-columnas-15(WindRun)-16(HiSpeed)-17(HiDir)-18(WindChill)
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(15, $fila, '-999');
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(16, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(17, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(18, $fila, '-999');
+
+			//excelBackup-columnas-20(THWIndex)-21(THWSIndex)
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(20, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(21, $fila, '-999');
+
+			//excelDepurado-columna7-presion, se copia en excelBackup-columna22-Bar
+			$datoPresion_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(7, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(22, $fila, $datoPresion_excelDepurado);
+
+			//excelDepurado-columna13-Rain depurada, se copia en excelBackup-columna23-Rain
+			$datoRainDepu_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(13, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(23, $fila, $datoRainDepu_excelDepurado);
+
+			//excelDepurado-columna14-Rain Rate x0.1, se copia en excelBackup-columna24-Rain Rate
+			$datoRainRateDepu_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(14, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(24, $fila, $datoRainRateDepu_excelDepurado);
+
+			//excelDepurado-columna15-RadSolarx10, se copia en excelBackup-columna25-solarRad
+			$datoRadSolarDepu_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(15, $filas_excelDepurado) -> getFormattedValue();
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(25, $fila, $datoRadSolarDepu_excelDepurado);
 
 		}
 
@@ -124,8 +144,11 @@ set_time_limit(500);
 		=            GUARDAMOS EL NUEVO ARCHIVO LUEGO DEL PROCESO DE DEPURACION            =
 		==================================================================================*/
 		
-		$writer_excelBackup = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($documentoBackup, 'Xls');
-		$writer_excelBackup->save('../creados/Lago Alto 2019.xls');
+		$writer_excelBackup = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($documentoBackup, 'Xlsx');
+		$writer_excelBackup->save('../creados/Lago Alto 2019 - Modificado.xlsx');
+
+		// $writer_excelDepurado = new Xls($documentoBackup);
+		// $writer_excelDepurado->save('../creados/Lago Alto 2019.xls');	
 				
 
 		$bandera_de_informacion = 100;			

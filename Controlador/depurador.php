@@ -56,11 +56,9 @@ set_time_limit(500);
 
 		//cargamos los documentos cargados
 		$documentoEstacion = IOFactory::load("../cargados/$nombre_archivoEstacion");
-		//$documentoBackup = IOFactory::load("../cargados/$nombre_archivoBackup");
 
 		//obtenemos la primera hoja de cada documento
 		$hojaActual_documentoEstacion = $documentoEstacion -> getSheet(0);
-		//$hojaActual_documentoBackup = $documentoBackup -> getSheetByName("ORIGINAL");
 
 		//obtenemos el mayor numero de filas del archivo estacion
 		$maxFilas_documentoEstacion = $hojaActual_documentoEstacion -> getHighestRow();
@@ -268,7 +266,7 @@ set_time_limit(500);
 		=            CENTRAMOS Y AJUSTAMOS LOS ESPACIOS            =
 		==========================================================*/			
 
-		$alineacion_excelDepurado = $hojaActual_excelDepurado -> getStyle('A1:Z1000') -> getAlignment();		
+		$alineacion_excelDepurado = $hojaActual_excelDepurado -> getStyle('A1:Z'.$maxFilas_excelDepurado) -> getAlignment();		
 		$alineacion_excelDepurado->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
 		$letras = array("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",);
