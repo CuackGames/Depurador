@@ -71,6 +71,16 @@
 						<label><strong>Resultados </strong></label>
 					</div>   
 
+					<div>
+						<label><strong>Resultados: <?php echo Mensaje($bandera_de_informacion); ?>!</strong></label>
+					</div>
+                    
+                    <div>                        
+                        - <label><a href="../cargados/<?php $nombre_archivoBackup?>.xlsx">Descargar archivo excel backup con los nuevos datos aqui</a></label>
+                    </div>
+
+					<div>
+
                     <!-- <div>                        
                         - <label><a href="../creados/Lago Alto 2019.xls" >Descargar archivo excel backup con los nuevos datos aqui</a></label>
                     </div>                  -->

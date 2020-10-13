@@ -141,17 +141,39 @@ set_time_limit(500);
 			$datoPresion_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(7, $filas_excelDepurado) -> getFormattedValue();
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(22, $fila, $datoPresion_excelDepurado);
 
-			//excelDepurado-columna13-Rain depurada, se copia en excelBackup-columna23-Rain
+			//excelDepurado-columna13-Rain depurada, se copia en excelBackup-columna23-Rain 
 			$datoRainDepu_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(13, $filas_excelDepurado) -> getFormattedValue();
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(23, $fila, $datoRainDepu_excelDepurado);
 
-			//excelDepurado-columna14-Rain Rate x0.1, se copia en excelBackup-columna24-Rain Rate
+			//excelDepurado-columna14-Rain Rate x0.1, se copia en excelBackup-columna24-Rain Rate y en -columna-28-UvIndex
 			$datoRainRateDepu_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(14, $filas_excelDepurado) -> getFormattedValue();
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(24, $fila, $datoRainRateDepu_excelDepurado);
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(28, $fila, $datoRainRateDepu_excelDepurado);
 
 			//excelDepurado-columna15-RadSolarx10, se copia en excelBackup-columna25-solarRad
 			$datoRadSolarDepu_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(15, $filas_excelDepurado) -> getFormattedValue();
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(25, $fila, $datoRadSolarDepu_excelDepurado);
+
+			//excelBackup-columnas-26(SolarEnergy)-27(HiSolarRad)
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(26, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(27, $fila, '-999');
+
+			//excelBackup-columnas-29(UVDose) hasta la columna 43(ArcInt) 	
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(29, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(30, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(31, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(32, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(33, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(34, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(35, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(36, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(37, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(38, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(39, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(40, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(41, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(42, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(43, $fila, '-999');			
 
 		}
 
@@ -185,7 +207,7 @@ set_time_limit(500);
 				break;
 
 			case 100: 
-				$mensaje = "Depuracion completa";
+				$mensaje = "Insercion de datos completa";
 				break;			
 
 			case 102:
