@@ -67,26 +67,41 @@ set_time_limit(500);
 		=            INSERTANDO INFORMACION EN EL DOCUMENTO BACKUP            =
 		=====================================================================*/
 
+		//obtenemos el numero maximo de filas del excel backUp
 		$maxFilas_documentoBackup = $hojaActual_documentoBackup -> getHighestRow();
+
+		//obtenemos el primer dato a insertar (fecha) del excel depurado
 		$primerDato_excelDepurado = $hojaActual_excelDepurado -> getCellByColumnAndRow(1, 2) -> getFormattedValue(); 
+
+		//esta variable guardara la fila donde concuerde la fecha con la esta en el excel depurado
 		$filaObjetivo_documentoBackup = 0;		
 		
+		//recorremos el excel backup, buscando la fila donde concuerde la fecha. Esta fila sera donde se iniciaran a insertar los datos
 		for($fila = 1; $fila <= $maxFilas_documentoBackup; $fila++)
 		{					
+			//buscamos el dato de la columna y fila correspondiente
 			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();			
 
+			//si el dato encontrado en el excel backUp, concuerda con el primer dato del excel depurado
 			if($datoFecha_documentoBackup == $primerDato_excelDepurado)
 			{
+				//se guarda la fila donde se encontro el dato, y finalizamos el ciclo for
 				$filaObjetivo_documentoBackup = $fila;		
 				break;
 			}
 		}
 
+		//variable para recorrer las filas del excel depurado. 
+		//Se usa otra variable para no usar una sola variable para recorrer las filas de ambos docuementos, ya que inician en valores diferentes
 		$filas_excelDepurado = 1;
+
+		//las filas a copiar en el excel backup seran la fila objetivo encontrada mas el numero maximo de filas del excel depurado
 		$total_filas_a_copiar = $filaObjetivo_documentoBackup + $maxFilas_excelDepurado;		
 		
+		//recorremos el excel backup, para copiar los datos del escel depurado, iniciando en la fila encontrada. hasta el total de filas indicado
 		for($fila = $filaObjetivo_documentoBackup; $fila <= $total_filas_a_copiar; $fila++)
 		{
+			//aumentamos la variable para recorrer el excel depurado
 			$filas_excelDepurado++;
 
 			///excelDepurado-columna3-temp, se copia en, excelBackup-columna8-tempOut
