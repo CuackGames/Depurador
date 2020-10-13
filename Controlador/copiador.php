@@ -127,11 +127,12 @@ set_time_limit(500);
 			$datoDV_excelDepurado  = $hojaActual_excelDepurado -> getCellByColumnAndRow(6, $filas_excelDepurado) -> getFormattedValue();
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(14, $fila, $datoDV_excelDepurado);
 
-			//excelBackup-columnas-15(WindRun)-16(HiSpeed)-17(HiDir)-18(WindChill)
+			//excelBackup-columnas-15(WindRun)-16(HiSpeed)-17(HiDir)-18(WindChill)-19(HeatIndex)
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(15, $fila, '-999');
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(16, $fila, '-999');
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(17, $fila, '-999');
-			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(18, $fila, '-999');
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(18, $fila, '-999');			
+			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(19, $fila, '-999');
 
 			//excelBackup-columnas-20(THWIndex)-21(THWSIndex)
 			$hojaActual_documentoBackup -> setCellValueByColumnAndRow(20, $fila, '-999');

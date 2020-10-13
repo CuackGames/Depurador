@@ -56,9 +56,8 @@
 
 		<span>
 			<p class="text-white h4 py-2">PASO 2: Insertar datos</p>		
-            <p class="text-white py-2">En este punto, ya se tiene un nuevo archivo excel con los datos depurados, que podra descargar en el link inferior. 
-            Ahora se utilizara este nuevo archivo para extraer los depurados e insertarlos en el archivo Backup de la estacion.
-            A continuación adjunte el archivo excel backup de la estacion correspondiente. </p>	
+            <p class="text-white py-2">Ya se tiene el archivo de  la estacion depurado. Ahora, se adjunta el archivo excel backUp de la estacion 
+			para insertarle los datos que se tienen en el archivo excel depurado. </p>	
 		</span>
 
 		<div >	

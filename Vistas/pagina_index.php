@@ -4,8 +4,8 @@
 
 		<span>
 			<p class="text-white h4 py-2">PASO 1: Depuradar datos</p>	
-			<p class="text-white py-2">En este primer paso, insertamos el archivo excel descargado remotamente de la estacion Davis 
-			para analizar los datos obtenidos y calcular los datos necesarios que se necesitaran para ser agregados al archivo excel Backup de la estacion.</p>		
+			<p class="text-white py-2">Se carga el archivo excel descargado remotamente de la estacion Davis, 
+			para realizar una depuracion de los datos.</p>		
 		</span>
   
 		<div >	
