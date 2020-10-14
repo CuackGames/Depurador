@@ -26,23 +26,24 @@
 
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-	<!--====  End of Section comment  ====-->
-
+	
 	<!--=====================================
 	=            Font Awesome           	=
 	======================================-->
 
 	<script src="https://kit.fontawesome.com/ae92afae65.js" crossorigin="anonymous"></script>
+	
+	<!--=============================
+	=            Styles           	=
+	==============================-->
 
-	<!--====  End of Section comment  ====-->
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 
 </head>
 	
 
 <body class="bg-dark">
-
-
+	
 	<!--=====================================
 	=           	 TITULO           	    =
 	======================================-->
@@ -60,6 +61,8 @@
 	<?php include "Vistas/pagina_index.php";  ?>
 
 	<!-- ================================ -->	
+	
+	<script src="js/main.js"></script>
 	
 </body>
 </html>

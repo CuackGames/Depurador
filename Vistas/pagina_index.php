@@ -3,32 +3,31 @@
 	<form method="POST" action="Controlador/depurador.php" enctype="multipart/form-data">
 
 		<span>
-			<p class="text-white h4 py-2">PASO 1: Depuradar datos</p>	
-			<p class="text-white py-2">Se carga el archivo excel descargado remotamente de la estacion Davis, 
-			para realizar una depuracion de los datos.</p>		
+			<p class="text-white h4 py-2">Depuradar datos</p>
+			<p class="text-white py-2">Se carga el archivo excel descargado remotamente de la estacion Davis, y el archivo backUp de la estacion.</p>
 		</span>
-  
-		<div >	
+
+		<div>
 
 			<ul class="list-group pl-3 pr-3">
 
 				<li class="list-group-item">
-					<div >
-						<label><strong>Adjunto el archivo excel sin depurar, descargado de la estacion</strong></label>
+					<div>
+						<label><strong>Adjunte excel sin depurar, descargado de la estacion</strong></label>
 					</div>
 					<div>
-						<input type="file" name="excel-estacion" id="excel-estacion" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" >
+						<input type="file" name="excel-estacion" id="excel-estacion" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 					</div>
 				</li>
 
-				<!-- <li class="list-group-item">
+				<li class="list-group-item">
 					<div>
-						<label><strong>Excel backup de la estacion</strong></label>
+						<label><strong>Adjunte excel backup de la estacion</strong></label>
 					</div>
 					<div>
-						<input type="file" name="excel-backup" id="excel-backup" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" >
+						<input type="file" name="excel-backup" id="excel-backup" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
 					</div>
-				</li>					 -->
+				</li>
 
 			</ul>
 
