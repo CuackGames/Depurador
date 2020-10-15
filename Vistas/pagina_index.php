@@ -1,45 +1,48 @@
 <div class="container">
 
-	<form method="POST" action="Controlador/depurador.php" enctype="multipart/form-data">
+	<div class="row">
 
-		<span>
-			<p class="text-white h4 py-2">Depuradar datos</p>
-			<p class="text-white py-2">Se carga el archivo excel descargado remotamente de la estacion Davis, y el archivo backUp de la estacion.</p>
-		</span>
+		<form class="col-sm-12" method="POST" action="Controlador/depurador.php" enctype="multipart/form-data">
 
-		<div>
+			<span>
+				<p class="text-white h4 py-2">Depuradar datos</p>
+				<p class="text-white py-2">Se carga el archivo excel descargado remotamente de la estacion Davis, y el archivo backUp de la estacion.</p>
+			</span>
 
-			<ul class="list-group pl-3 pr-3">
+			<div>
 
-				<li class="list-group-item">
-					<div>
-						<label><strong>Adjunte excel sin depurar, descargado de la estacion</strong></label>
-					</div>
-					<div>
-						<input type="file" name="excel-estacion" id="excel-estacion" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-					</div>
-				</li>
+				<ul class="list-group pl-3 pr-3">
 
-				<li class="list-group-item">
-					<div>
-						<label><strong>Adjunte excel backup de la estacion</strong></label>
-					</div>
-					<div>
-						<input type="file" name="excel-backup" id="excel-backup" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-					</div>
-				</li>
+					<li class="list-group-item">
+						<div>
+							<label><strong>Adjunte excel sin depurar, descargado de la estacion</strong></label>
+						</div>
+						<div>
+							<input type="file" name="excel-estacion" id="excel-estacion" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+						</div>
+					</li>
 
-			</ul>
+					<li class="list-group-item">
+						<div>
+							<label><strong>Adjunte excel backup de la estacion</strong></label>
+						</div>
+						<div>
+							<input type="file" name="excel-backup" id="excel-backup" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+						</div>
+					</li>
 
-		</div>
+				</ul>
 
-		<div class="container pt-3 ">
+			</div>
 
-			<button id="submit" type="submit" class="btn btn-default btn-light float-left">Depurar</button>
+			<div class="container pt-3 ">
 
-		</div>
+				<button id="submit" type="submit" class="btn btn-default btn-light float-left">Depurar</button>
 
-	</form>
+			</div>
+
+		</form>
+
+	</div>
 
 </div>
-

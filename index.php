@@ -33,12 +33,6 @@
 
 	<script src="https://kit.fontawesome.com/ae92afae65.js" crossorigin="anonymous"></script>
 	
-	<!--=============================
-	=            Styles           	=
-	==============================-->
-
-	<link rel="stylesheet" type="text/css" href="css/styles.css">
-
 </head>
 	
 
@@ -54,15 +48,13 @@
 
 	<!-- ================================ -->	
 
-	<!--=====================================
+	<!--=========================================
 	=                 CUERPO           		    =
-	======================================-->
+	==========================================-->
 
 	<?php include "Vistas/pagina_index.php";  ?>
 
 	<!-- ================================ -->	
-	
-	<script src="js/main.js"></script>
 	
 </body>
 </html>

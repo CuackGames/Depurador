@@ -1,3 +1,6 @@
+
+<!-- <?php include "../Vistas/pagina_carga.php";  ?> -->
+
 <?php
 
 /* ============================================================================================================ */
@@ -285,7 +288,7 @@ set_time_limit(500);
 		$writer_excelDepurado->save("../creados/Modificado - $nombre_archivoEstacion");
 		
 		
-		
+
 
 		/*==================================================================================
 		=            INSERCION DE DATOS DE ARCHIVO DEPURADO A ARCHIVO ESTACION             =
