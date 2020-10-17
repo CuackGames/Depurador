@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
- 
-	<meta charset="UTF-8"> 
 
-	<!-- Bootstrap 4 is mobile-first -->	
+<head>
+
+	<meta charset="UTF-8">
+
+	<!-- Bootstrap 4 is mobile-first -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- -->
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>   
+	<title>Document</title>
 
 	<!--=====================================
 	=            Bootstrap 4 CDN            =
@@ -26,27 +27,38 @@
 
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-	
+
 	<!--=====================================
 	=            Font Awesome           	=
 	======================================-->
 
 	<script src="https://kit.fontawesome.com/ae92afae65.js" crossorigin="anonymous"></script>
-	
+
+	<!--=====================================
+	=	            CSS Y JS   	        	=
+	======================================-->
+
+	<script type="text/javascript" src="../js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+
 </head>
-	
+
 
 <body class="bg-dark">
-	
+
+	<div id="contenedor_carga">
+		<div id="carga"></div>
+	</div>
+
 	<!--=====================================
 	=           	 TITULO           	    =
 	======================================-->
-	
+
 	<div class="container-fluid">
 		<p class="text-center text-white h2 py-3">ANALIZADOR DE DATOS</p>
 	</div>
 
-	<!-- ================================ -->	
+	<!-- ================================ -->
 
 	<!--=========================================
 	=                 CUERPO           		    =
@@ -54,7 +66,8 @@
 
 	<?php include "Vistas/pagina_index.php";  ?>
 
-	<!-- ================================ -->	
-	
+	<!-- ================================ -->
+
 </body>
+
 </html>
