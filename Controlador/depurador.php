@@ -1,6 +1,7 @@
 
 <?php
 
+include "../Vistas/pagina_carga.php";  
 /* ============================================================================================================ */
 
 //llama al autoload
@@ -425,29 +426,21 @@ set_time_limit(500);
 		//esta variable guardara la fila donde concuerde la fecha con la esta en el excel depurado
 		$filaObjetivo_documentoBackup = 0;
 		$datoFecha_documentoBackup = 0;
+		$primerDato_excelDepurado = (string)$primerDato_excelDepurado;
 
-		for($fila = 7298; $fila <= $maxFilas_documentoBackup; $fila++)
+		for($fila = 7900; $fila <= $maxFilas_documentoBackup; $fila++)
+		
 		{					
 			//buscamos el dato de la columna y fila correspondiente
-			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();		
-			$datoFecha2_documentoBackup = substr($datoFecha_documentoBackup, 0, 10);
-
-			// if($fila <= 7300)
-			// {
-			// 	echo $datoFecha2_documentoBackup."<br>";
-			// 	echo $primerDato_excelDepurado."<br>";
-			// 	break;
-			// }
-
+			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();					
+			$datoFecha_documentoBackup = substr($datoFecha_documentoBackup, 0, 3).substr($datoFecha_documentoBackup, 4, 7);
+			
 			//si el dato encontrado en el excel backUp, concuerda con el primer dato del excel depurado
-			if($datoFecha2_documentoBackup == $primerDato_excelDepurado)
+			if($datoFecha_documentoBackup == $primerDato_excelDepurado)
 			{
 				//se guarda la fila donde se encontro el dato, y finalizamos el ciclo for
-				$filaObjetivo_documentoBackup = $fila;	
-				echo $fila."<br>";
-				echo $filaObjetivo_documentoBackup."<br>";
-				echo $datoFecha2_documentoBackup."<br>";
-				echo $primerDato_excelDepurado."<br>";
+				$filaObjetivo_documentoBackup = $fila;					
+				echo $filaObjetivo_documentoBackup."<br>";						
 				break;
 			}
 			

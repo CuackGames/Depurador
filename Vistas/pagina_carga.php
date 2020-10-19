@@ -6,22 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <script type="text/javascript" src="../js/main.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/main.css">	
+    <!-- Bootstrap 4 is mobile-first -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,300;1,900&display=swap" rel="stylesheet">
+
+    <!-- css -->    
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <!-- js -->
+    <script src="js/main.js"></script>
+
 </head>
 
-<body>
+<body class="bg-dark">
 
     <div id="contenedor_carga">
         <div id="carga"></div>
-    </div>
+        <div class="container">
+            <div class="row justify-content-center align-items-center minh">
+                <div class="col-lg-12">                    
+                    <div>
+                        <p class="text-white text-center titulo-carga">Analizando...</p>
+                    </div> 
+                    <div>
+                        <p class="text-white text-center cuerpo-carga">Espera, esto puede tardar unos minutos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
 
-    <section id="principal">
-        <img src="https://images.pexels.com/photos/97077/pexels-photo-97077.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="">
-        <img src="https://static.pexels.com/photos/29333/pexels-photo-293333.jpeg" alt="">
-        <img src="https://static.pexels.com/photos/251225/pexels-photo-251225.jpeg" alt="">
-    </section>
-    
 </body>
 
 </html>

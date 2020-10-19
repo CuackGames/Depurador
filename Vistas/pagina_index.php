@@ -37,7 +37,7 @@
 
 			<div class="container pt-3 ">
 
-				<button id="submit" type="submit" class="btn btn-default btn-light float-left">Depurar</button>
+				<button id="submit" type="submit" class="btn btn-default btn-light float-left" onclick="myFunction()">Depurar</button>
 
 			</div>
 

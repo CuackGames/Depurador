@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-	
+
 	<meta charset="UTF-8">
 
 	<!-- Bootstrap 4 is mobile-first -->
@@ -24,7 +24,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
 	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
 	<!--=====================================
 	=            Font Awesome           	=
@@ -32,20 +32,18 @@
 
 	<script src="https://kit.fontawesome.com/ae92afae65.js" crossorigin="anonymous"></script>
 
-	<!--=============================
-	=            Styles           	=
-	==============================-->
-	
-	<!-- <link rel="stylesheet" type="text/css" href="css/main.css">	 -->
+	<!--=====================================
+	=	            JQUERY   	        	=
+	======================================-->
+
+	<!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
 
 </head>
 
 <body class="bg-dark">
 
-	<!-- <div id="contenedor_carga">
-		<div id="carga"></div>
-	</div> -->
-	
 	<!--=====================================
 	=           	 TITULO           	    =
 	======================================-->
@@ -124,7 +122,7 @@
 						?>
 
 					</div>
-					
+
 				</li>
 			</ul>
 
@@ -138,8 +136,6 @@
 
 	</div>
 
-	<!-- <script type="text/javascript" src="../js/main.js"></script> -->
-		
 </body>
 
 </html>

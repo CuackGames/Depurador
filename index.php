@@ -34,21 +34,42 @@
 
 	<script src="https://kit.fontawesome.com/ae92afae65.js" crossorigin="anonymous"></script>
 
-	<!--=====================================
-	=	            CSS Y JS   	        	=
-	======================================-->
+	<!--=============================================
+	=	            JQUERY, CSS, JS   	        	=
+	==============================================-->
 
-	<script type="text/javascript" src="../js/main.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
+	<!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,300;1,900&display=swap" rel="stylesheet">
+
+    <!-- css -->    
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <!-- js -->
+    <script src="js/main.js"></script>
 
 </head>
-
 
 <body class="bg-dark">
 
 	<div id="contenedor_carga">
-		<div id="carga"></div>
-	</div>
+        <div id="carga"></div>
+        <div class="container">
+            <div class="row justify-content-center align-items-center minh">
+                <div class="col-lg-12">                    
+                    <div>
+                        <p class="text-white text-center titulo-carga">Analizando...</p>
+                    </div> 
+                    <div>
+                        <p class="text-white text-center cuerpo-carga">Espera, esto puede tardar unos minutos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 	<!--=====================================
 	=           	 TITULO           	    =
