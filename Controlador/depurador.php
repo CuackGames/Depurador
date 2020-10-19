@@ -429,7 +429,6 @@ set_time_limit(500);
 		$primerDato_excelDepurado = (string)$primerDato_excelDepurado;
 
 		for($fila = 7900; $fila <= $maxFilas_documentoBackup; $fila++)
-		
 		{					
 			//buscamos el dato de la columna y fila correspondiente
 			$datoFecha_documentoBackup = $hojaActual_documentoBackup -> getCellByColumnAndRow(1, $fila) -> getFormattedValue();					
