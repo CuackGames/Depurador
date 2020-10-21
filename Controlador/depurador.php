@@ -33,8 +33,8 @@ $columna_excelDepurado = 1;				//variable para llevar el orden de las columnas d
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	/*========================================================================
-		=            TOMAMOS LOS ARCHIVOS ENVIADOS POR VARIABLES POST            =
-		========================================================================*/
+	=            TOMAMOS LOS ARCHIVOS ENVIADOS POR VARIABLES POST            =
+	========================================================================*/
 
 	//obtenemos el nombre de los archivos cargados
 	$nombre_archivoEstacion = $_FILES['excel-estacion']['name'];
@@ -52,8 +52,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	move_uploaded_file($tmp_archivoBackup, "../cargados/$nombre_archivoBackup");
 
 	/*=============================================================================================
-		=            CARGAMOS EL ARCHIVO ESTACION, OBTENEMOS EL NUMERO DE FILAS Y COLUMNAS            =
-		=============================================================================================*/
+	=            CARGAMOS EL ARCHIVO ESTACION, OBTENEMOS EL NUMERO DE FILAS Y COLUMNAS            =
+	=============================================================================================*/
 
 	//cargamos los documentos cargados
 	$documentoEstacion = IOFactory::load("../cargados/$nombre_archivoEstacion");
@@ -72,8 +72,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 	/*========================================================================================
-		=            CREAMOS EL NUEVO ARCHIVO DONDE COPIAREMOS LOS DATOS YA DEPURADOS            =
-		========================================================================================*/
+	=            CREAMOS EL NUEVO ARCHIVO DONDE COPIAREMOS LOS DATOS YA DEPURADOS            =
+	========================================================================================*/
 
 	//crear un nuevo objeto de la clase spreadsheet. para el nuevo doc. excel
 	$excelDepurado = new Spreadsheet();
@@ -91,8 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 	/*==============================================================================================================================================================================
-		=            RECORREMOS LAS CELDAS DEL ARCHIVO ESTACION HORIZONTALMENTE DE IZQUEIRDA A DERECHA, INICIANDO EN LA CELDA A2 Y AGREGAMOS LAS FILAS FALTANTES  EN EL NUEVO          =
-		==============================================================================================================================================================================*/
+	=            RECORREMOS LAS CELDAS DEL ARCHIVO ESTACION HORIZONTALMENTE DE IZQUEIRDA A DERECHA, INICIANDO EN LA CELDA A2 Y AGREGAMOS LAS FILAS FALTANTES  EN EL NUEVO          =
+	==============================================================================================================================================================================*/
 
 	//iteramos en las celdas del documento cargado, atraves de sus filas y columnas
 	for ($fila = 2; $fila <= $maxFilas_documentoEstacion; $fila++) {
@@ -388,29 +388,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	//Buscamos la hoja archivo plano
 	$hojaActual_documentoBackup = $documentoBackup->getSheetByName("archivo plano");
+
+	//Buscamos el numero maximo de filas de la hoja archivo plano
 	$maxFilas_documentoBackup = $hojaActual_documentoBackup->getHighestRow();
 
 	//esta variable guardara la fila donde concuerde la fecha con la esta en el excel depurado
-	$filaObjetivo_documentoBackup = 0;
-	$datoFecha_documentoBackup = 0;
-
-	for ($fila = 1; $fila <= $maxFilas_documentoBackup; $fila++) {
+	$filaObjetivo_documentoBackup = $datoFecha_documentoBackup = 0;
+	
+	//miramos si el primero dato del archivo estacion es el primero del mes			
+	$primerDatoCorregido_excelDepurado = substr($primerDato_excelDepurado, 0, 3).'1'.substr($primerDato_excelDepurado, 5);
+	
+	//recorremos la hoja actual, comparando las fechas con el archivo estacion , para saber la fila desde donde se debe copiar
+	for ($fila = 1; $fila <= $maxFilas_documentoBackup; $fila++) 
+	{
 		//buscamos el dato de la columna y fila correspondiente
 		$datoFecha_documentoBackup = $hojaActual_documentoBackup->getCellByColumnAndRow(1, $fila)->getFormattedValue();
-		$datoFecha_documentoBackup = substr($datoFecha_documentoBackup, 0, 3) . substr($datoFecha_documentoBackup, 4, 7);
+	
+		//cortamos la cadena para quitar un cero extra en el dato de la pagina archivo plano
+		$datoFecha_documentoBackup = substr($datoFecha_documentoBackup, 0, 3) . substr($datoFecha_documentoBackup, 4, 6);
+		
+		if($datoFecha_documentoBackup == $primerDatoCorregido_excelDepurado ){
+			$filaDatoCorregido = $fila;
+		}
 
 		//si el dato encontrado en el excel backUp, concuerda con el primer dato del excel depurado
 		if ($datoFecha_documentoBackup == $primerDato_excelDepurado) {
 			//se guarda la fila donde se encontro el dato, y finalizamos el ciclo for
-			$filaObjetivo_documentoBackup = $fila;
+			$filaObjetivo_documentoBackup = $fila;			
 			break;
 		}
 	}
 
-	//Definimos el valor de la fila hasta donde se copiaran los datos
+	//Una vez encontrada la fila, definimos el valor de la fila hasta donde se copiaran los datos
 	$total_filas_a_copiar = 0;
-	$total_filas_a_copiar = $filaObjetivo_documentoBackup + $maxFilas_excelDepurado;
+	$filasExtra = $filaDatoCorregido - $filaObjetivo_documentoBackup;
+	echo $filasExtra.'<br>';
+	$total_filas_a_copiar = $filaObjetivo_documentoBackup + $maxFilas_excelDepurado + $filasExtra;
+	echo $total_filas_a_copiar.'<br>';
 
+	//definimos un diccionario para relacionar los numeros del mes, con su nombre
 	$meses = array(
 		"01" => "ENERO", "02" => "FEBRERO", "03" => "MARZO",
 		"04" => "ABRIL", "05" => "MAYO", "06" => "JUNIO",
@@ -418,28 +434,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		"10" => "OCTUBRE", "11" => "NOVIEMBRE", "12" => "DICIEMBRE",
 	);
 
+	//variables que deben iniciar nulas
 	$mesACopiar_excelDepurado = $mesNum_excelDepurado = $mesNumPrevio = null;
-	$hojaPlano_documentoBackup = $hojaActual_documentoBackup;
+
+	//hoja del mes donde se guardaran los datos el archivo plano
 	$hojaMes_documentoBackup = 0;
+
+	//filas de la hoja mes
 	$filaHojaMes_documentoBackup = 2;
 
-	for ($fila = $filaObjetivo_documentoBackup; $fila <= $total_filas_a_copiar; $fila++) 
-	{
-		$datoArchivoPlano_excelBackup = $hojaPlano_documentoBackup->getCellByColumnAndRow(1, $fila)->getFormattedValue();
+	//Copiamos los datos desde la hoja archivo plano, a la hoja del mes que corresponda
+	for ($fila = $filaObjetivo_documentoBackup; $fila <= $total_filas_a_copiar; $fila++) {
+		//dato fecha de la fila indicada a copiar
+		$datoArchivoPlano_excelBackup = $hojaActual_documentoBackup->getCellByColumnAndRow(1, $fila)->getFormattedValue();
+
+		//cortamos el dato fecha para extraer solo el mes
 		$mesNum_excelDepurado = substr($datoArchivoPlano_excelBackup, 0, 2);
-		
 
+		//buscamos el dato fecha de la misma hoja, pero en la fila anterior a la indicada
 		$filaPrevia = $fila - 1;
-		$datoFilaPrevia = $hojaPlano_documentoBackup->getCellByColumnAndRow(1, $filaPrevia)->getFormattedValue();
+		$datoFilaPrevia = $hojaActual_documentoBackup->getCellByColumnAndRow(1, $filaPrevia)->getFormattedValue();
 		$mesNumPrevio = substr($datoFilaPrevia, 0, 2);
-		
 
-		if (($mesNum_excelDepurado != $mesNumPrevio) || (is_null($mesACopiar_excelDepurado))) 
-		{
-			foreach ($meses as $key => $value) 
-			{
-				if ($mesNum_excelDepurado == $key) 
-				{
+		//si el mes de la fila actual es diferente a la del anterior, o la variable que contiene el nombre de la hoja mes es nula
+		if (($mesNum_excelDepurado != $mesNumPrevio) || (is_null($mesACopiar_excelDepurado))) {
+			//recorremos el diccionario hasta encontrar la coincidencia
+			foreach ($meses as $key => $value) {
+				if ($mesNum_excelDepurado == $key) {
+					//guardamos el mes correspondiente, reinciamos la variables filas apra copiar desde el inicio de la nueva hoja mes
 					$mesACopiar_excelDepurado = $value;
 					$filaHojaMes_documentoBackup = 2;
 					break;
@@ -447,10 +469,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			}
 		}
 
+		//abrimos la hoja del mes encontrado
 		$hojaMes_documentoBackup = $documentoBackup->getSheetByName("$mesACopiar_excelDepurado");
-		$hojaMes_documentoBackup->setCellValueByColumnAndRow(1, $filaHojaMes_documentoBackup, $datoArchivoPlano_excelBackup);
-		$filaHojaMes_documentoBackup++;
 
+		//copiamos en la hoja mes correspondiente, la fila de la hoja archivo plano correspondiente
+		$hojaMes_documentoBackup->setCellValueByColumnAndRow(1, $filaHojaMes_documentoBackup, $datoArchivoPlano_excelBackup);
+
+		//aumentamos las filas para ir recorriendo la hoja mes indicada
+		$filaHojaMes_documentoBackup++;
 	}
 
 
@@ -462,9 +488,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$writer_excelBackup->save("../creados/Modificado - $nombre_archivoBackup");
 
 	$bandera_de_informacion = 100;
-} else {
+	} else {
 	$bandera_de_informacion = 404;
-}
+	}
 
 /* ============================================================================================================ */
 
